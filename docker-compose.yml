@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  app:
+    image: ghcr.io/zage4448/personal-project-fastapi:latest
+    container_name: docker-personal-project-fastapi-server
+    ports:
+      - 8000:8000
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
