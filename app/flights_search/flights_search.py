@@ -60,3 +60,69 @@ def get_flight_offers():
         return data
     else:
         print(f"API 요청 실패: {response.status_code}")
+
+
+def extract_flight_products(data):
+    products = []
+
+    for product in data['data']:
+        product_info = {}
+
+        # 왕복 항공권 정보인지 확인
+        if len(product['itineraries']) > 1:
+            outbound_segments = product['itineraries'][0]['segments']
+            inbound_segments = product['itineraries'][1]['segments']
+
+            carrier_code = product['validatingAirlineCodes'][0]
+            carrier_name = data['dictionaries']['carriers'][carrier_code]
+
+            outbound_flights = []
+            for outbound_segment in outbound_segments:
+                flight_info = {}
+                flight_info['origin'] = outbound_segment['departure']['iataCode']
+                flight_info['destination'] = outbound_segment['arrival']['iataCode']
+                flight_info['departure_time'] = outbound_segment['departure']['at']
+                flight_info['arrival_time'] = outbound_segment['arrival']['at']
+                flight_info['airline'] = carrier_name
+                outbound_flights.append(flight_info)
+
+            inbound_flights = []
+            for inbound_segment in inbound_segments:
+                flight_info = {}
+                flight_info['origin'] =inbound_segment['departure']['iataCode']
+                flight_info['destination'] = inbound_segment['arrival']['iataCode']
+                flight_info['departure_time'] = inbound_segment['departure']['at']
+                flight_info['arrival_time'] = inbound_segment['arrival']['at']
+                flight_info['airline'] = carrier_name
+                inbound_flights.append(flight_info)
+
+            product_info = {
+                'outbound flights': outbound_flights,
+                'inbound flights': inbound_flights,
+                'price': float(product['price']['total']),
+                'seats left': product['numberOfBookableSeats'],
+            }
+            products.append(product_info)
+
+
+        else:
+            outbound_segments = product['itineraries'][0]['segments']
+            carrier_code = product['validatingAirlineCodes'][0]
+            carrier_name = data['dictionaries']['carriers'][carrier_code]
+
+            outbound_flights = []
+            for outbound_segment in outbound_segments:
+                flight_info = {}
+                flight_info['origin'] = outbound_segment['departure']['iataCode']
+                flight_info['destination'] = outbound_segment['arrival']['iataCode']
+                flight_info['departure_time'] = outbound_segment['departure']['at']
+                flight_info['arrival_time'] = outbound_segment['arrival']['at']
+                flight_info['airline'] = carrier_name
+                outbound_flights.append(flight_info)
+
+            product_info = {
+                'outbound flights': outbound_flights,
+                'price': float(product['price']['total']),
+                'seats left': product['numberOfBookableSeats'],
+            }
+            products.append(product_info)
