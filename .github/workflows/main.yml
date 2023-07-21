@@ -46,6 +46,13 @@ jobs:
           python ./app/email_info/email_info.py
           cat app/email_info/account
 
+      - name: Create flight_api for flight search
+        run: |
+          pwd
+          echo "${{ secrets.FLIGHT_API }}" > app/flight_api/flight_api_info.py
+          python ./app/flight_api/flight_api_info.py
+          cat app/flight_api/flight_api
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
