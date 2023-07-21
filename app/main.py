@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from flights_search.flights_search_router import flights_search_router
 from email_authentication.email_authentication_router import email_authentication_router
 
 app = FastAPI()
@@ -20,3 +21,4 @@ def read_root():
     return {"Hello": "World"}
 
 app.include_router(email_authentication_router)
+app.include_router(flights_search_router)

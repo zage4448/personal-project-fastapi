@@ -28,26 +28,69 @@ def get_access_token():
 
 
 
-def get_flight_offers():
+def get_flight_offers(request):
     access_token = get_access_token()
 
     if not access_token:
         print("토큰 발급 실패")
         return
 
-    endpoint = "https://test.api.amadeus.com/v2//shopping/flight-offers"
+    endpoint = "https://test.api.amadeus.com/v2/shopping/flight-offers"
 
-    # 검색 파라미터
-    params = {
-        "originLocationCode": "ICN",
-        "destinationLocationCode": "LAX",
-        "departureDate": "2023-08-01",
-        "returnDate": "2023-08-16",
-        "adults": 1,
-        "currencyCode": "KRW",
-        "nonStop": "true",
-        "max": 5
-    }
+    if request.returnDate is '':
+        if request.nonStop is 'True':
+            params = {
+                "originLocationCode": request.originLocationCode,
+                "destinationLocationCode": request.destinationLocationCode,
+                "departureDate": request.departureDate,
+                "adults": request.adults,
+                "children": request.children,
+                "infants": request.infants,
+                "nonStop": 'true',
+                "currencyCode": "KRW",
+                "max": 30
+            }
+        else:
+            params = {
+                "originLocationCode": request.originLocationCode,
+                "destinationLocationCode": request.destinationLocationCode,
+                "departureDate": request.departureDate,
+                "adults": request.adults,
+                "children": request.children,
+                "infants": request.infants,
+                "nonStop": 'false',
+                "currencyCode": "KRW",
+                "max": 30
+            }
+
+    else:
+        if request.nonStop is 'True':
+            params = {
+                "originLocationCode": request.originLocationCode,
+                "destinationLocationCode": request.destinationLocationCode,
+                "departureDate": request.departureDate,
+                "returnDate": request.returnDate,
+                "adults": request.adults,
+                "children": request.children,
+                "infants": request.infants,
+                "nonStop": 'true',
+                "currencyCode": "KRW",
+                "max": 30
+            }
+        else:
+            params = {
+                "originLocationCode": request.originLocationCode,
+                "destinationLocationCode": request.destinationLocationCode,
+                "departureDate": request.departureDate,
+                "returnDate": request.returnDate,
+                "adults": request.adults,
+                "children": request.children,
+                "infants": request.infants,
+                "nonStop": 'false',
+                "currencyCode": "KRW",
+                "max": 30
+            }
+
 
     headers = {
         "Authorization": f"Bearer {access_token}"
@@ -126,3 +169,5 @@ def extract_flight_products(data):
                 'seats left': product['numberOfBookableSeats'],
             }
             products.append(product_info)
+
+    return products
