@@ -25,3 +25,38 @@ def get_access_token():
     else:
         print(f"토큰 요청 실패: {response.status_code}")
         return None
+
+
+
+def get_flight_offers():
+    access_token = get_access_token()
+
+    if not access_token:
+        print("토큰 발급 실패")
+        return
+
+    endpoint = "https://test.api.amadeus.com/v2//shopping/flight-offers"
+
+    # 검색 파라미터
+    params = {
+        "originLocationCode": "ICN",
+        "destinationLocationCode": "LAX",
+        "departureDate": "2023-08-01",
+        "returnDate": "2023-08-16",
+        "adults": 1,
+        "currencyCode": "KRW",
+        "nonStop": "true",
+        "max": 5
+    }
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    response = requests.get(endpoint, params=params, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        return data
+    else:
+        print(f"API 요청 실패: {response.status_code}")
