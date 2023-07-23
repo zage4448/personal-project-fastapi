@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.flights_search.flights_search import get_flight_offers, extract_flight_products
+from flights_search.flights_search import get_flight_offers, extract_flight_products
 
 flights_search_router = APIRouter()
 
