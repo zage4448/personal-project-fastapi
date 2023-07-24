@@ -117,7 +117,11 @@ def extract_flight_products(data):
             inbound_segments = product['itineraries'][1]['segments']
 
             carrier_code = product['validatingAirlineCodes'][0]
-            carrier_name = data['dictionaries']['carriers'][carrier_code]
+            try:
+                carrier_name = data['dictionaries']['carriers'][carrier_code]
+            except KeyError:
+                carrier_name = carrier_code
+            flight_id = product['id']
 
             outbound_flights = []
             for outbound_segment in outbound_segments:
@@ -140,10 +144,11 @@ def extract_flight_products(data):
                 inbound_flights.append(flight_info)
 
             product_info = {
-                'outbound flights': outbound_flights,
-                'inbound flights': inbound_flights,
+                'outbound_flights': outbound_flights,
+                'inbound_flights': inbound_flights,
                 'price': float(product['price']['total']),
-                'seats left': product['numberOfBookableSeats'],
+                'seats_left': product['numberOfBookableSeats'],
+                'flight_id': flight_id,
             }
             products.append(product_info)
 
@@ -151,7 +156,11 @@ def extract_flight_products(data):
         else:
             outbound_segments = product['itineraries'][0]['segments']
             carrier_code = product['validatingAirlineCodes'][0]
-            carrier_name = data['dictionaries']['carriers'][carrier_code]
+            try:
+                carrier_name = data['dictionaries']['carriers'][carrier_code]
+            except KeyError:
+                carrier_name = carrier_code
+            flight_id = product['id']
 
             outbound_flights = []
             for outbound_segment in outbound_segments:
@@ -164,9 +173,10 @@ def extract_flight_products(data):
                 outbound_flights.append(flight_info)
 
             product_info = {
-                'outbound flights': outbound_flights,
+                'outbound_flights': outbound_flights,
                 'price': float(product['price']['total']),
-                'seats left': product['numberOfBookableSeats'],
+                'seats_left': product['numberOfBookableSeats'],
+                'flight_id': flight_id,
             }
             products.append(product_info)
 
