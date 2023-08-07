@@ -1,7 +1,7 @@
 import requests
 import pickle
 
-FLIGHT_API_DATA_SAVED_FILE = 'flight_api/flight_api'
+FLIGHT_API_DATA_SAVED_FILE = 'app/flight_api/flight_api'
 
 def get_access_token():
     with open(FLIGHT_API_DATA_SAVED_FILE, 'rb') as f:

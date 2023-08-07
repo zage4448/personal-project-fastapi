@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 email_authentication_router = APIRouter()
 
-NAVER_USER_DATA_SAVED_FILE = "email_info/account"
+NAVER_USER_DATA_SAVED_FILE = "app/email_info/account"
 
 
 def send_email(smtp_info, naver_user_info, msg):
