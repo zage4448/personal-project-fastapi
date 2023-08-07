@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 
-from app.flights_search.flights_search_router import flights_search_router
-from app.email_authentication.email_authentication_router import email_authentication_router
+from flights_search.flights_search_router import flights_search_router
+from email_authentication.email_authentication_router import email_authentication_router
 
 app = FastAPI()
 load_dotenv()
